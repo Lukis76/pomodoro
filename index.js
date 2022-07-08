@@ -8,10 +8,6 @@ let current = null
 const bAdd = document.querySelector('#b_add')
 const inputTask = document.querySelector('#input_task')
 const from = document.querySelector('#from')
-const taskName = document.querySelector("#time #taskName")
-const timeDiv = document.querySelector('#time #value')
-const tasksContainer = document.querySelector('#tasks')
-const startButtons = document.querySelectorAll('.task .start_button')
 
 
 from.addEventListener('submit', (e) => {
@@ -29,28 +25,31 @@ const createTask = (value) => {
     title: value,
     completed: false,
   }
-
+  
   tasks.unshift(newTask)
-
+  
 }
 
 const renderTask = () => {
   const html = tasks.map(task => {
     return `
-    <div class="task>
-      <div class="completed">
-      ${task.completed 
-        ?`<span class="done" >Done</span>` 
-        : `<button class="start_button" data-id="${task.id}" >start</button>` }
-      </div>
-      <div class="title">${task.title}</div>
+    <div class="task">
+    <div class="completed">
+    ${task.completed 
+      ?`<span class="done" >Done</span>` 
+      : `<button class="start_button" data-id="${task.id}" >Start</button>`
+    }
+    </div>
+    <div class="title">${task.title}</div>
     </div>
     `
   })
-
+  
+  const tasksContainer = document.querySelector('#tasks')
   tasksContainer.innerHTML = html.join('')
-
-
+  
+  
+  const startButtons = document.querySelectorAll('.task .start_button')
   startButtons.forEach(button => {
     button.addEventListener('click', () => {
       if(!timer){
@@ -66,6 +65,7 @@ const startButtonHandler = (id) => {
   time = 25 * 60
   current = id
   const taskIndex = tasks.findIndex(task => task.id === id)
+  const taskName = document.querySelector("#time #taskName")
   taskName.textContent = tasks[taskIndex].title
   timer = setInterval(() => {
     timeHandler(id)
@@ -87,6 +87,7 @@ const timeHandler = (id) => {
 const renhderTime = () => {
   const minutes = parseInt(time / 60)
   const seconds = parseInt(time % 60)
+  const timeDiv = document.querySelector('#time #value')
 
 
 timeDiv.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`
